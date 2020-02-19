@@ -18,8 +18,18 @@ function findSteps(id) {
     .where("sc.id", id);
 }
 
+function add(scheme) {
+  return db("schemes")
+    .insert(scheme)
+    .then(id => {
+      // because id is an array
+      return findById(id[0]);
+    });
+}
+
 module.exports = {
   find,
   findById,
-  findSteps
+  findSteps,
+  add
 };
