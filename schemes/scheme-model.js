@@ -20,10 +20,36 @@ function findSteps(id) {
 
 function add(scheme) {
   return db("schemes")
-    .insert(scheme)
+    .insert(scheme, "id")
     .then(id => {
       // because id is an array
       return findById(id[0]);
+    });
+}
+
+function update(changes, id) {
+  return db("schemes")
+    .where({ id })
+    .update(changes)
+    .then(updated => {
+      return findById(id);
+    });
+}
+
+function remove(id) {
+  return db("schemes")
+    .where({ id })
+    .then(found => {
+      return db("schemes")
+        .where({ id })
+        .del()
+        .then(deleted => {
+          if (deleted) {
+            return found;
+          } else {
+            return null;
+          }
+        });
     });
 }
 
@@ -31,5 +57,7 @@ module.exports = {
   find,
   findById,
   findSteps,
-  add
+  add,
+  update,
+  remove
 };
