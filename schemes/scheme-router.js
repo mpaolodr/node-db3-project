@@ -73,7 +73,6 @@ router.post("/:id/addStep", (req, res) => {
   if (stepData.step_number && stepData.instructions) {
     Schemes.addStep(stepData, id)
       .then(step => {
-        console.log(stepData);
         res.status(201).json(step);
       })
       .catch(err => {
