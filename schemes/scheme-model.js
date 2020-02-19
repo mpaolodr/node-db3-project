@@ -53,11 +53,24 @@ function remove(id) {
     });
 }
 
+function addStep(step, scheme_id) {
+  return db("schemes")
+    .where({ id: scheme_id })
+    .then(found => {
+      if (found.length !== 0) {
+        return db("steps").insert(step, "id");
+      } else {
+        return null;
+      }
+    });
+}
+
 module.exports = {
   find,
   findById,
   findSteps,
   add,
   update,
-  remove
+  remove,
+  addStep
 };

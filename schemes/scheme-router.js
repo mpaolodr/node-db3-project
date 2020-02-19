@@ -66,6 +66,24 @@ router.post("/", (req, res) => {
   }
 });
 
+router.post("/:id/addStep", (req, res) => {
+  const { id } = req.params;
+  const stepData = { ...req.body, scheme_id: id };
+
+  if (stepData.step_number && stepData.instructions) {
+    Schemes.addStep(stepData, id)
+      .then(step => {
+        console.log(stepData);
+        res.status(201).json(step);
+      })
+      .catch(err => {
+        res.status(500).json({ errorMessage: err.message });
+      });
+  } else {
+    res.status(400).json({ errorMessage: "Missing Fields" });
+  }
+});
+
 router.post("/:id/steps", (req, res) => {
   const stepData = req.body;
   const { id } = req.params;
